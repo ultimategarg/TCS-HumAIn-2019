@@ -3,7 +3,7 @@ import glob, os
 current_dir = "obj"
 # Directory where the data will reside, relative to 'darknet.exe'
 path_data = 'data/obj/'
-# Percentage of images to be used for the test set
+# Percentage of images to be used for the testset
 percentage_test = 10;
 # Create and/or truncate train.txt and test.txt
 file_train = open('train.txt', 'w')  
