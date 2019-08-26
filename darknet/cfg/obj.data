@@ -1,0 +1,5 @@
+classes= 1  
+train  = /media/mpl1/mpl_hd1/yolo/yolov2/darknet/cfg/train.txt  
+valid  = /media/mpl1/mpl_hd1/yolo/yolov2/darknet/cfg/test.txt  
+names = obj.names  
+backup = backup/
