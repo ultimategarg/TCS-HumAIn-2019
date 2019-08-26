@@ -10,7 +10,7 @@ Vehicle Number Plate detection -  Identify the license place in the image and do
 1. To create train.txt and test.txt files we run a python file `train_test_split.py
 
 ## Configuration files preparation:
-You need to create following three files in the “cfg” directory.
+I created following three files in the “cfg” directory.
 
 - obj.data
 - obj.names
