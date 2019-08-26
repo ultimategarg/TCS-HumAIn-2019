@@ -1,11 +1,11 @@
-import glob, os
+import os
 # directory obj is in data folder of darknet which contains both images and labels
 current_dir = "obj"
-# Directory where the data will reside, relative to 'darknet.exe'
+# Directory where the data will reside
 path_data = 'data/obj/'
-# Percentage of images to be used for the testset
+# Percentage of images to be used for the test set
 percentage_test = 10;
-# Create and/or truncate train.txt and test.txt
+# Create  train.txt and test.txt
 file_train = open('train.txt', 'w')  
 file_test = open('test.txt', 'w')
 # Populate train.txt and test.txt

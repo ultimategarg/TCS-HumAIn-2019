@@ -1,32 +1,3 @@
-#!python3
-"""
-Python 3 wrapper for identifying objects in images
-
-Requires DLL compilation
-
-Both the GPU and no-GPU version should be compiled; the no-GPU version should be renamed "yolo_cpp_dll_nogpu.dll".
-
-On a GPU system, you can force CPU evaluation by any of:
-
-- Set global variable DARKNET_FORCE_CPU to True
-- Set environment variable CUDA_VISIBLE_DEVICES to -1
-- Set environment variable "FORCE_CPU" to "true"
-
-
-To use, either run performDetect() after import, or modify the end of this file.
-
-See the docstring of performDetect() for parameters.
-
-Directly viewing or returning bounding-boxed images requires scikit-image to be installed (`pip install scikit-image`)
-
-
-Original *nix 2.7: https://github.com/pjreddie/darknet/blob/0f110834f4e18b30d5f101bf8f1724c34b7b83db/python/darknet.py
-Windows Python 2.7 version: https://github.com/AlexeyAB/darknet/blob/fc496d52bf22a0bb257300d3c79be9cd80e722cb/build/darknet/x64/darknet.py
-
-@author: Philip Kahn
-@date: 20180503
-"""
-#pylint: disable=R, W0401, W0614, W0703
 from ctypes import *
 import math
 import random
@@ -114,7 +85,7 @@ if os.name == "nt":
             lib = CDLL(winNoGPUdll, RTLD_GLOBAL)
             print("Notice: CPU-only mode")
         else:
-            # Try the other way, in case no_gpu was
+            
             # compile but not renamed
             lib = CDLL(winGPUdll, RTLD_GLOBAL)
             print("Environment variables indicated a CPU run, but we didn't find `"+winNoGPUdll+"`. Trying a GPU run anyway.")
@@ -231,10 +202,7 @@ def classify(net, meta, im):
     return res
 
 def detect(net, meta, image, thresh=.5, hier_thresh=.5, nms=.45, debug= False):
-    """
-    Performs the meat of the detection
-    """
-    #pylint: disable= C0321
+    
     im = load_image(image, 0, 0)
     if debug: print("Loaded image")
     ret = detect_image(net, meta, im, thresh, hier_thresh, nms, debug)
@@ -299,54 +267,7 @@ metaMain = None
 altNames = None
 
 def performDetect(imagePath="data/dog.jpg", thresh= 0.25, configPath = "./cfg/yolov3.cfg", weightPath = "yolov3.weights", metaPath= "./cfg/coco.data", showImage= True, makeImageOnly = False, initOnly= False):
-    """
-    Convenience function to handle the detection and returns of objects.
-
-    Displaying bounding boxes requires libraries scikit-image and numpy
-
-    Parameters
-    ----------------
-    imagePath: str
-        Path to the image to evaluate. Raises ValueError if not found
-
-    thresh: float (default= 0.25)
-        The detection threshold
-
-    configPath: str
-        Path to the configuration file. Raises ValueError if not found
-
-    weightPath: str
-        Path to the weights file. Raises ValueError if not found
-
-    metaPath: str
-        Path to the data file. Raises ValueError if not found
-
-    showImage: bool (default= True)
-        Compute (and show) bounding boxes. Changes return.
-
-    makeImageOnly: bool (default= False)
-        If showImage is True, this won't actually *show* the image, but will create the array and return it.
-
-    initOnly: bool (default= False)
-        Only initialize globals. Don't actually run a prediction.
-
-    Returns
-    ----------------------
-
-
-    When showImage is False, list of tuples like
-        ('obj_label', confidence, (bounding_box_x_px, bounding_box_y_px, bounding_box_width_px, bounding_box_height_px))
-        The X and Y coordinates are from the center of the bounding box. Subtract half the width or height to get the lower corner.
-
-    Otherwise, a dict with
-        {
-            "detections": as above
-            "image": a numpy array representing an image, compatible with scikit-image
-            "caption": an image caption
-        }
-    """
-    # Import the global variables. This lets us instance Darknet once, then just call performDetect() again without instancing again
-    global metaMain, netMain, altNames #pylint: disable=W0603
+    global metaMain, netMain, altNames 
     assert 0 < thresh < 1, "Threshold should be a float between zero and one (non-inclusive)"
     if not os.path.exists(configPath):
         raise ValueError("Invalid config path `"+os.path.abspath(configPath)+"`")
@@ -359,7 +280,7 @@ def performDetect(imagePath="data/dog.jpg", thresh= 0.25, configPath = "./cfg/yo
     if metaMain is None:
         metaMain = load_meta(metaPath.encode("ascii"))
     if altNames is None:
-        # In Python 3, the metafile default access craps out on Windows (but not Linux)
+        
         # Read the names file and create a list to feed to detect
         try:
             with open(metaPath) as metaFH:
